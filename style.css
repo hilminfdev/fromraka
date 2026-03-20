@@ -1,0 +1,546 @@
+:root {
+  --maroon: #8b0000;
+  --rose: #c0395a;
+  --blush: #f4a7b9;
+  --navy: #0b0f2e;
+  --navy-mid: #111830;
+  --gold: #d4a96a;
+  --cream: #f5ede6;
+  --text-muted: #9aa0bc;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--navy);
+  color: white;
+  overflow-x: hidden;
+  font-family: "DM Sans", sans-serif;
+  cursor: default;
+}
+
+/* ─── NOISE OVERLAY ─── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* ─── CANVAS BG ─── */
+#bgCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── PARALLAX ORBS ─── */
+.orbs {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+.orb1 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(139, 0, 0, 0.5), transparent 70%);
+  top: 10%;
+  left: -5%;
+}
+.orb2 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(192, 57, 90, 0.4), transparent 70%);
+  top: 40%;
+  right: -5%;
+}
+.orb3 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgba(212, 169, 106, 0.2),
+    transparent 70%
+  );
+  bottom: 20%;
+  left: 20%;
+}
+
+/* ─── SECTIONS ─── */
+section {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 28px;
+  position: relative;
+}
+
+/* ─── CARD TEXT ─── */
+.card {
+  max-width: 360px;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(50px) scale(0.97);
+  transition:
+    opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-align: center;
+}
+
+.card.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.card-inner {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 24px;
+  padding: 44px 32px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-inner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 169, 106, 0.4),
+    transparent
+  );
+}
+
+.card-num {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+.card h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(26px, 7vw, 36px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: #fff;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.card h1 span {
+  color: var(--blush);
+  font-style: normal;
+}
+
+.card p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.9;
+}
+
+/* ─── DIVIDER GLYPH ─── */
+.glyph {
+  font-size: 20px;
+  margin: 18px 0;
+  display: block;
+  opacity: 0.4;
+}
+
+/* ─── HERO (section 1) ─── */
+.hero-section {
+  position: relative;
+}
+
+.hero-label {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+
+.hero-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(42px, 12vw, 72px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--blush);
+}
+
+.hero-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 20px;
+  line-height: 1.8;
+  max-width: 280px;
+  margin-inline: auto;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.3;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.scroll-hint span {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.scroll-hint .line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, white, transparent);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ─── GALLERY ─── */
+.gallery-section {
+  flex-direction: column;
+  gap: 32px;
+  padding: 80px 20px;
+  align-items: center;
+}
+
+.gallery-title {
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+
+.gallery-title.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.gallery-wrapper {
+  width: 100%;
+  max-width: 420px;
+  padding: 16px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gallery-title h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(28px, 8vw, 42px);
+  font-weight: 300;
+  font-style: italic;
+  color: #fff;
+}
+
+.gallery-title p {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  opacity: 0.6;
+  margin-top: 8px;
+}
+
+/* Masonry 2-col, foto ga kecrop */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.gallery.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-item {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1; /* KUNCI BIAR KOTAK */
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.gallery.show .gallery-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* stagger tiap foto */
+.gallery.show .gallery-item:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.gallery.show .gallery-item:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.gallery.show .gallery-item:nth-child(3) {
+  transition-delay: 0.3s;
+}
+.gallery.show .gallery-item:nth-child(4) {
+  transition-delay: 0.4s;
+}
+.gallery.show .gallery-item:nth-child(5) {
+  transition-delay: 0.5s;
+}
+
+.gallery-item:hover {
+  box-shadow: 0 8px 32px rgba(192, 57, 90, 0.25);
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* biar penuh & rapi */
+}
+.gallery-item:last-child {
+  grid-column: span 2;
+  aspect-ratio: 16/9;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.03);
+  filter: grayscale(0%) brightness(1);
+}
+
+/* caption kecil opsional */
+.gallery-item .caption {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 8px 10px;
+  text-align: center;
+  opacity: 0.6;
+}
+
+/* ─── ENDING ─── */
+.ending-section {
+  flex-direction: column;
+  gap: 32px;
+  position: relative;
+}
+
+.ending-card {
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.9s ease;
+}
+
+.ending-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ending-card h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(32px, 9vw, 52px);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.ending-card p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.9;
+  margin-bottom: 36px;
+}
+
+/* ─── BUTTON ─── */
+#loveBtn {
+  position: relative;
+  padding: 16px 40px;
+  border-radius: 100px;
+  border: 1px solid rgba(192, 57, 90, 0.4);
+  background: transparent;
+  color: white;
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+#loveBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--maroon), var(--rose));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+}
+
+#loveBtn span {
+  position: relative;
+  z-index: 1;
+}
+
+#loveBtn:hover::before,
+#loveBtn:active::before {
+  opacity: 1;
+}
+
+#loveBtn:active {
+  transform: scale(0.96);
+}
+
+/* ─── PETAL / FLOWER EFFECT ─── */
+.petal {
+  position: fixed;
+  font-size: 18px;
+  pointer-events: none;
+  z-index: 9000;
+  animation: petalFall var(--dur) cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+  top: -40px;
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.6);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(var(--spin)) scale(1);
+    opacity: 0;
+  }
+}
+
+/* ─── RIPPLE ─── */
+.ripple {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 8000;
+  animation: rippleOut 0.8s ease-out forwards;
+  border: 1px solid rgba(192, 57, 90, 0.5);
+}
+
+@keyframes rippleOut {
+  from {
+    transform: scale(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(6);
+    opacity: 0;
+  }
+}
+
+/* ─── HEART BURST ─── */
+.heart-burst {
+  position: fixed;
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 9000;
+  animation: heartBurst var(--d) ease-out forwards;
+}
+
+@keyframes heartBurst {
+  0% {
+    transform: translate(0, 0) scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* ─── STARS BG ─── */
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--t) ease-in-out infinite;
+  animation-delay: var(--d);
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.4);
+  }
+}
